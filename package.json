@@ -19,6 +19,7 @@
     "jspdf": "^4.2.1",
     "jszip": "^3.10.1",
     "lgates": "^1.2.0",
+    "lucide-vue-next": "^1.0.0",
     "tailwindcss": "^4.3.3",
     "video.js": "^8.24.0",
     "vue": "^3.4.15",
