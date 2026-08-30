@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql pdo_pgsql pdo_sqlite intl zip opcache mbstring \
+    && docker-php-ext-install pdo_mysql pdo_pgsql intl zip opcache mbstring \
     && curl -fsSL https://bun.sh/install | bash \
     && mv /root/.bun/bin/bun /usr/local/bin/bun \
     && apt-get clean \
