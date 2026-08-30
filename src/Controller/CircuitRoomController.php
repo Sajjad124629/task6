@@ -22,6 +22,15 @@ class CircuitRoomController extends AbstractController
         private HubInterface $hub
     ) {}
 
+    private function getMercurePublicUrl(): string
+    {
+        $url = $_SERVER['MERCURE_PUBLIC_URL'] ?? $_ENV['MERCURE_PUBLIC_URL'] ?? getenv('MERCURE_PUBLIC_URL');
+        if (is_array($url)) {
+            $url = reset($url);
+        }
+        return (is_string($url) && !empty($url)) ? $url : 'https://mercure-hl26.onrender.com/.well-known/mercure';
+    }
+
     #[Route('/', name: 'app_home', methods: ['GET'])]
     public function landing(Request $request): Response
     {
@@ -30,7 +39,7 @@ class CircuitRoomController extends AbstractController
         return $this->inertia->render('Landing', [
             'rooms' => $rooms,
             'defaultUserName' => $request->query->get('name', 'Engineer'),
-            'mercureUrl' => $_ENV['MERCURE_PUBLIC_URL'] ?? 'http://127.0.0.1:3000/.well-known/mercure'
+            'mercureUrl' => $this->getMercurePublicUrl()
         ]);
     }
 
@@ -73,7 +82,7 @@ class CircuitRoomController extends AbstractController
 
         return $this->inertia->render('Workspace', [
             'room' => $updatedRoom,
-            'mercureUrl' => $_ENV['MERCURE_PUBLIC_URL'] ?? 'http://127.0.0.1:3000/.well-known/mercure',
+            'mercureUrl' => $this->getMercurePublicUrl(),
             'currentUser' => [
                 'name' => $assignedName,
                 'rawInputName' => $rawName,

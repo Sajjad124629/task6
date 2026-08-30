@@ -356,9 +356,8 @@ function runLogicEngine() {
 }
 
 function startMercureSubscription() {
-  if (!props.mercureUrl) return;
-
-  const url = new URL(props.mercureUrl);
+  const mercureEndpoint = props.mercureUrl || 'https://mercure-hl26.onrender.com/.well-known/mercure';
+  const url = new URL(mercureEndpoint, window.location.origin);
   url.searchParams.append('topic', `room/${props.room.id}`);
 
   mercureEventSource = new EventSource(url);

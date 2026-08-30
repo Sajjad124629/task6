@@ -187,7 +187,8 @@ onMounted(() => {
   }
   clientToken.value = token;
 
-  const url = new URL(props.mercureUrl);
+  const mercureEndpoint = props.mercureUrl || 'https://mercure-hl26.onrender.com/.well-known/mercure';
+  const url = new URL(mercureEndpoint, window.location.origin);
   url.searchParams.append('topic', 'room/rooms_list');
   
   const eventSource = new EventSource(url);
