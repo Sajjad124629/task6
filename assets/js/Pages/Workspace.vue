@@ -323,7 +323,7 @@ const gridSize = ref(props.room.gridSize || 20);
 const snapToGrid = ref(props.room.snapToGrid ?? true);
 const selectedPreset = ref('');
 
-const { fitView, screenToFlowCoordinate } = useVueFlow();
+const { fitView, screenToFlowCoordinate, snapToGrid: flowSnapToGrid, snapGrid: flowSnapGrid } = useVueFlow();
 
 const showTruthTable = ref(false);
 const truthTableLoading = ref(false);
@@ -428,10 +428,31 @@ function onNodeDragStart() {
   isDraggingNode.value = true;
 }
 
-function onNodeDragStop() {
+function onNodeDragStop(event) {
   isDraggingNode.value = false;
+  if (snapToGrid.value && event && event.node) {
+    const step = Number(gridSize.value);
+    const snapX = Math.round(event.node.position.x / step) * step;
+    const snapY = Math.round(event.node.position.y / step) * step;
+
+    nodes.value = nodes.value.map(n => {
+      if (n.id === event.node.id) {
+        return {
+          ...n,
+          position: { x: snapX, y: snapY }
+        };
+      }
+      return n;
+    });
+  }
   onGraphChanged();
 }
+
+watch([snapToGrid, gridSize], ([newSnap, newSize]) => {
+  if (flowSnapToGrid) flowSnapToGrid.value = Boolean(newSnap);
+  if (flowSnapGrid) flowSnapGrid.value = [Number(newSize), Number(newSize)];
+  onGraphChanged();
+}, { immediate: true });
 
 function onDragStartPanel(event, gateType, label) {
   if (event.dataTransfer) {
