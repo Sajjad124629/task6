@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LogiSync — Real-Time Collaborative Logic Circuit Lab</title>
+
+  {% if app.environment == 'dev' %}
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module" src="http://localhost:5173/assets/js/app.js"></script>
+  {% else %}
+    <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}?v={{ 'now'|date('U') }}" />
+    <script type="module" src="{{ asset('build/assets/app.js') }}?v={{ 'now'|date('U') }}"></script>
+  {% endif %}
+</head>
+
+<body class="bg-[#fdfbf7] text-slate-800 antialiased overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+  <div id="app" data-page="{{ page|json_encode|e('html_attr') }}"></div>
+</body>
+</html>
